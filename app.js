@@ -281,7 +281,7 @@ const Charts = {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: 'rgba(255, 255, 255, 0.7)',
+                            color: '#64748b',
                             padding: 20,
                             font: {
                                 family: 'Inter',
