@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TimeFlow - Track Your Productivity</title>
+    <meta name="description"
+        content="TimeFlow helps you track how you spend your work hours with hourly reminders and beautiful analytics.">
+    <meta name="theme-color" content="#0f0f23">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Setup Screen -->
+        <section id="setup-screen" class="screen active">
+            <div class="setup-content">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" stroke="url(#gradient1)" stroke-width="6" />
+                            <line x1="50" y1="50" x2="50" y2="25" stroke="url(#gradient1)" stroke-width="4"
+                                stroke-linecap="round" />
+                            <line x1="50" y1="50" x2="70" y2="50" stroke="url(#gradient2)" stroke-width="4"
+                                stroke-linecap="round" />
+                            <circle cx="50" cy="50" r="6" fill="url(#gradient1)" />
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#a855f7" />
+                                    <stop offset="100%" stop-color="#ec4899" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1 class="app-title">TimeFlow</h1>
+                    <p class="app-subtitle">Track your productivity, hour by hour</p>
+                </div>
+
+                <div class="setup-steps">
+                    <!-- Step 1: Notifications -->
+                    <div id="step-notifications" class="setup-step active">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                            </svg>
+                        </div>
+                        <h2>Enable Notifications</h2>
+                        <p>Get hourly reminders during your work hours to log your time.</p>
+                        <button id="enable-notifications-btn" class="btn btn-primary">
+                            <span>Enable Notifications</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <button id="skip-notifications-btn" class="btn btn-ghost">Skip for now</button>
+                    </div>
+
+                    <!-- Step 2: Work Hours -->
+                    <div id="step-workhours" class="setup-step">
+                        <div class="step-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12,6 12,12 16,14" />
+                            </svg>
+                        </div>
+                        <h2>Set Your Work Hours</h2>
+                        <p>When do you typically work? We'll only send reminders during these hours.</p>
+
+                        <div class="time-picker-container">
+                            <div class="time-picker">
+                                <label>Start Time</label>
+                                <input type="time" id="start-time" value="09:00">
+                            </div>
+                            <div class="time-separator">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                            <div class="time-picker">
+                                <label>End Time</label>
+                                <input type="time" id="end-time" value="18:00">
+                            </div>
+                        </div>
+
+                        <button id="complete-setup-btn" class="btn btn-primary">
+                            <span>Start Tracking</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard -->
+        <section id="dashboard-screen" class="screen">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <div class="logo-small">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" stroke="url(#gradient1)" stroke-width="6" />
+                            <line x1="50" y1="50" x2="50" y2="25" stroke="url(#gradient1)" stroke-width="4"
+                                stroke-linecap="round" />
+                            <line x1="50" y1="50" x2="70" y2="50" stroke="url(#gradient2)" stroke-width="4"
+                                stroke-linecap="round" />
+                            <circle cx="50" cy="50" r="6" fill="url(#gradient1)" />
+                        </svg>
+                    </div>
+                    <span class="header-title">TimeFlow</span>
+                </div>
+                <div class="header-right">
+                    <button id="settings-btn" class="icon-btn" aria-label="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Tab Navigation -->
+            <nav class="tab-nav">
+                <button class="tab-btn active" data-tab="today">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    <span>Today</span>
+                </button>
+                <button class="tab-btn" data-tab="analytics">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    <span>Analytics</span>
+                </button>
+                <button class="tab-btn" data-tab="history">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" />
+                    </svg>
+                    <span>History</span>
+                </button>
+            </nav>
+
+            <!-- Tab Content -->
+            <main class="tab-content">
+                <!-- Today Tab -->
+                <div id="today-tab" class="tab-panel active">
+                    <div class="today-header">
+                        <h2>Today's Log</h2>
+                        <span id="today-date" class="today-date"></span>
+                    </div>
+
+                    <div class="quick-stats">
+                        <div class="stat-card work">
+                            <div class="stat-icon">💼</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="work-hours">0h</span>
+                                <span class="stat-label">Work</span>
+                            </div>
+                        </div>
+                        <div class="stat-card rest">
+                            <div class="stat-icon">☕</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="rest-hours">0h</span>
+                                <span class="stat-label">Rest</span>
+                            </div>
+                        </div>
+                        <div class="stat-card doomscroll">
+                            <div class="stat-icon">📱</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="doomscroll-hours">0h</span>
+                                <span class="stat-label">Doomscroll</span>
+                            </div>
+                        </div>
+                        <div class="stat-card other">
+                            <div class="stat-icon">✨</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="other-hours">0h</span>
+                                <span class="stat-label">Other</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <h3>Timeline</h3>
+                        <div id="timeline" class="timeline">
+                            <!-- Timeline items will be generated here -->
+                        </div>
+                    </div>
+
+                    <button id="log-hour-btn" class="btn btn-primary floating-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        <span>Log Current Hour</span>
+                    </button>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics-tab" class="tab-panel">
+                    <div class="analytics-header">
+                        <h2>Your Analytics</h2>
+                        <div class="period-selector">
+                            <button class="period-btn active" data-period="week">Week</button>
+                            <button class="period-btn" data-period="month">Month</button>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="productivity-chart"></canvas>
+                    </div>
+
+                    <div class="insights-container">
+                        <h3>Insights</h3>
+                        <div id="insights" class="insights">
+                            <!-- Insights will be generated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tab -->
+                <div id="history-tab" class="tab-panel">
+                    <div class="history-header">
+                        <h2>Log History</h2>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <!-- History items will be generated here -->
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- Log Modal -->
+        <div id="log-modal" class="modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Log Your Hour</h2>
+                    <button class="modal-close" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="log-time-display">How did you spend <strong id="log-hour-display">9:00 AM - 10:00
+                            AM</strong>?</p>
+
+                    <div class="activity-options">
+                        <button class="activity-btn" data-activity="work">
+                            <span class="activity-emoji">💼</span>
+                            <span class="activity-name">Work</span>
+                            <span class="activity-desc">Focused, productive work</span>
+                        </button>
+                        <button class="activity-btn" data-activity="rest">
+                            <span class="activity-emoji">☕</span>
+                            <span class="activity-name">Rest</span>
+                            <span class="activity-desc">Break, lunch, relaxation</span>
+                        </button>
+                        <button class="activity-btn" data-activity="doomscroll">
+                            <span class="activity-emoji">📱</span>
+                            <span class="activity-name">Doomscroll</span>
+                            <span class="activity-desc">Social media, distractions</span>
+                        </button>
+                        <button class="activity-btn" data-activity="other">
+                            <span class="activity-emoji">✨</span>
+                            <span class="activity-name">Other</span>
+                            <span class="activity-desc">Meetings, calls, errands</span>
+                        </button>
+                    </div>
+
+                    <div class="note-section">
+                        <label for="log-note">Add a note (optional)</label>
+                        <textarea id="log-note" placeholder="What were you working on?"></textarea>
+                    </div>
+
+                    <button id="submit-log-btn" class="btn btn-primary btn-full">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20,6 9,17 4,12" />
+                        </svg>
+                        <span>Submit Log</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="modal-close" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Work Hours</h3>
+                        <div class="time-picker-container compact">
+                            <div class="time-picker">
+                                <label>Start</label>
+                                <input type="time" id="settings-start-time" value="09:00">
+                            </div>
+                            <div class="time-separator">→</div>
+                            <div class="time-picker">
+                                <label>End</label>
+                                <input type="time" id="settings-end-time" value="18:00">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <div class="toggle-setting">
+                            <span>Hourly Reminders</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="notifications-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section danger-zone">
+                        <h3>Danger Zone</h3>
+                        <button id="clear-data-btn" class="btn btn-danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6" />
+                                <path
+                                    d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6M8,6V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2" />
+                                <line x1="10" y1="11" x2="10" y2="17" />
+                                <line x1="14" y1="11" x2="14" y2="17" />
+                            </svg>
+                            <span>Clear All Data</span>
+                        </button>
+                    </div>
+
+                    <button id="save-settings-btn" class="btn btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
